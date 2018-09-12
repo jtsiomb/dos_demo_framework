@@ -68,5 +68,5 @@ Under MS-DOS type `make -f Makefile.dj` to build with DJGPP, or type `wmake` to
 build with Watcom.
 
 DJGPP or Watcom environment must be set up prior to building with either.
-Assembly source files are build with nasm, so make sure you have nasm in your
-PATH before starting.
+Assembly source files are assembled with nasm, so make sure you have nasm in
+your PATH before starting.
