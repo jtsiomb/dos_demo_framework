@@ -6,6 +6,10 @@
 #include "demo.h"
 
 struct screen *example_screen(void);
+/*
+struct screen *another_screen(void);
+struct screen *athird_screen(void);
+*/
 
 #define NUM_SCR 32
 static struct screen *scr[NUM_SCR];
@@ -21,6 +25,14 @@ int scr_init(void)
 	if(!(scr[idx++] = example_screen())) {
 		return -1;
 	}
+	/*
+	if(!(scr[idx++] = another_screen())) {
+		return -1;
+	}
+	if(!(scr[idx++] = athird_screen())) {
+		return -1;
+	}
+	*/
 	num_screens = idx;
 
 	assert(num_screens <= NUM_SCR);

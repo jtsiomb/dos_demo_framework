@@ -42,7 +42,7 @@ static int init(void)
 {
 	gen_phong_tex(&phongtex, PHONG_TEX_SZ, PHONG_TEX_SZ, 5.0f, 0, 0, 10, 50, 92, 192, 192, 192);
 
-	if(gen_torus_mesh(&torus, 1.0f, 0.35, 24, 12) == -1) {
+	if(gen_torus_mesh(&torus, 1.0f, 0.35, 16, 8) == -1) {
 		return -1;
 	}
 	return 0;
