@@ -1,0 +1,68 @@
+src = $(wildcard src/*.c) \
+	  $(wildcard src/3dgfx/*.c) \
+	  $(wildcard src/dos/*.c) \
+	  $(wildcard src/parts/*.c)
+asmsrc = $(wildcard src/*.asm) $(wildcard src/dos/*.asm)
+obj = $(src:.c=.cof) $(asmsrc:.asm=.cof)
+dep = $(obj:.cof=.dep)
+bin = demo.exe
+
+ifeq ($(findstring COMMAND.COM, $(SHELL)), COMMAND.COM)
+	hostsys = dos
+	dep =
+else
+	hostsys = unix
+	TOOLPREFIX = i586-pc-msdosdjgpp-
+endif
+
+inc = -Isrc -Isrc/dos -Ilibs/imago/src
+opt = -O3 -ffast-math -fno-strict-aliasing
+dbg = -g
+warn = -pedantic -Wall -Wno-unused-function -Wno-unused-variable
+
+CC = $(TOOLPREFIX)gcc
+AR = $(TOOLPREFIX)ar
+CFLAGS = $(warn) -march=pentium $(dbg) $(opt) $(inc)
+LDFLAGS = libs/imago/imago.dja
+
+$(bin): $(obj) imago
+	$(CC) -o $@ -Wl,-Map=ld.map $(obj) $(LDFLAGS)
+
+%.cof: %.asm
+	nasm -f coff -o $@ $<
+
+-include $(dep)
+
+%.cof: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+%.dep: %.c
+	@$(CPP) $(CFLAGS) $< -MM -MT $(@:.dep=.cof) >$@
+
+.PHONY: imago
+imago:
+	$(MAKE) -C libs/imago -f Makefile.dj
+
+.PHONY: cleanlibs
+cleanlibs:
+	$(MAKE) -C libs/imago -f Makefile.dj clean
+
+.PHONY: clean
+.PHONY: cleandep
+
+ifeq ($(hostsys), dos)
+clean:
+	del src\*.cof
+	del src\dos\*.cof
+	del $(bin)
+
+cleandep:
+	del src\*.dep
+	del src\dos\*.dep
+else
+clean:
+	rm -f $(obj) $(bin)
+
+cleandep:
+	rm -f $(dep)
+endif
