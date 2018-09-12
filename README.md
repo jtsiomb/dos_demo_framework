@@ -19,6 +19,8 @@ Here's a non-exhaustive list of things provided by this framework:
    * Flat, gouraud, texture mapped, and textured-gouraud polygon fillers.
    * Homogeneous frustum polygon/line/point clipping.
    * 3D clipper for user-defined clipping planes.
+   * Matrix stacks.
+   * Immediate mode and vertex array/index array drawing.
    * Lighting.
    * Texture-coordinate generation for spherical environment mapping.
  - Mesh loading (OBJ).
@@ -32,6 +34,11 @@ Here's a non-exhaustive list of things provided by this framework:
 
 See example screen in `src/parts/example.c` to see how to write a demo part,
 and `scr_init` in `src/screen.c` to see how to register it with the demosystem.
+
+Note that all GL-like 3D pipeline features have limitations in comparison with
+OpenGL. For instance Z-buffering is not implemented due to performance
+considerations, and you need to z-sort before you draw instead. See
+`3dgfx/3dgfx.h` to see what's available, and how to use it.
 
 License
 -------
